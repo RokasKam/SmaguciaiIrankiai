@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -7,13 +6,15 @@ import {
   CardContent,
   Typography,
   Button,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Toy } from '../../Interfaces/Toy';
-import axios from 'axios';
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import { Toy } from "./../Interfaces/Toy";
+import axios from "axios";
+import { useUserContext } from '../Context/UserContext';
 
 function ListOfItems() {
   const [toys, setToys] = useState<Toy[]>([]);
+  const { user } = useUserContext();
   useEffect(() => {
     const getAllToysParameters = {
       pageNumber: 1,
@@ -21,35 +22,36 @@ function ListOfItems() {
     };
 
     axios
-      .get<Toy[]>('https://localhost:7026/api/Product/GetItems', {
+      .get<Toy[]>("https://localhost:7026/api/Product/GetItems", {
         params: getAllToysParameters,
       })
       .then((response) => {
-        console.log('API Response:', response.data); // Log the response data
+        console.log("API Response:", response.data); // Log the response data
         setToys(response.data);
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   return (
     <div>
-      <MenuBar />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginTop: '20px',
-        }}
-      >
-        <Button
-          component={Link}
-          to="/AddItem"
-          variant="contained"
-          color="primary"
+      {user && user.Role === "Admin" && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+          }}
         >
-          Add Item
-        </Button>
-      </div>
+          <Button
+            component={Link}
+            to="/AddItem"
+            variant="contained"
+            color="primary"
+          >
+            Add Item
+          </Button>
+        </div>
+      )}
       <Container>
         <Grid container spacing={2}>
           {Object.values(toys).map((toy) => (

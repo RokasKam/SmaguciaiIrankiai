@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -7,22 +6,22 @@ import {
   Button,
   Paper,
   Snackbar,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useUserContext } from '../../Context/UserContext';
-import { apiService } from '../../serivces/business/apiService';
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "./../Context/UserContext";
+import { apiService } from "./../serivces/apiService";
 
 function LoginPage() {
-  const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
+  const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const { setUser } = useUserContext();
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const { user, setUser } = useUserContext();
   const navigate = useNavigate();
 
   const login = async () => {
     try {
       if (!loginInfo.email || !loginInfo.password) {
-        setSnackbarMessage('Please fill in both email and password.');
+        setSnackbarMessage("Please fill in both email and password.");
         setSnackbarOpen(true);
         return;
       }
@@ -30,9 +29,9 @@ function LoginPage() {
       const loginResponse = await apiService.login(loginInfo);
       try {
         const userResponse = await apiService.fetchUserInfo(
-          loginResponse.data.accessToken,
+          loginResponse.data.accessToken
         );
-        setUser({
+        const newUser = {
           Token: loginResponse.data.accessToken,
           Id: userResponse.data.id,
           Nickname: userResponse.data.nickname,
@@ -44,19 +43,32 @@ function LoginPage() {
           ReviewCount: userResponse.data.reviewCount,
           Role: userResponse.data.role,
           Gender: userResponse.data.gender,
-        });
+        };
 
-        // Redirect to the desired route upon successful login
+        setUser(newUser); // Set user in context
+        localStorage.setItem("userData", JSON.stringify(newUser)); // Store user data in localStorage
+
+
+        localStorage.setItem("accessToken", loginResponse.data.accessToken);
         navigate('/');
+        window.location.reload();
       } catch (error) {
-        console.log('Error fetching user info', error);
+        console.log("Error fetching user info", error);
       }
     } catch (error) {
-      setSnackbarMessage('Login failed. Please check your credentials.');
+      setSnackbarMessage("Login failed. Please check your credentials.");
       setSnackbarOpen(true);
-      console.log('Login failed', error);
+      console.log("Login failed", error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      console.log("Current User ID:", user.Id);
+    }else{
+      console.log("No user detected")
+    }
+  }, [user]);
 
   const handleFormSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -69,24 +81,23 @@ function LoginPage() {
 
   return (
     <div>
-      <MenuBar />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             margin: 32,
           }}
         >
           <Paper
             elevation={3}
             style={{
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              padding: "16px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <Typography variant="h5">Login</Typography>
@@ -127,7 +138,7 @@ function LoginPage() {
                 variant="contained"
                 color="primary"
               >
-                Sign In
+                Login
               </Button>
             </form>
           </Paper>

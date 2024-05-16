@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TextField, Button, Rating, Box, Snackbar } from '@mui/material';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
+import { useUserContext } from './../Context/UserContext';
 
 interface Review {
   id: string;

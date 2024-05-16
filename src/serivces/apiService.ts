@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_ENDPOINTS_USER } from '../../constants/apiEndpoints';
+import { API_ENDPOINTS_USER } from './../constants/apiEndpoints';
 
 const REACT_APP_API = 'https://localhost:7026/api';
 

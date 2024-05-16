@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect  } from 'react';
 
 type User = {
   Token: string;
@@ -31,10 +31,20 @@ export const useUserContext = () => {
   return context;
 };
 
-export const UserContext: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
+export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | undefined>(() => {
+    const userData = localStorage.getItem("userData");
+    return userData ? JSON.parse(userData) : undefined;
+  });
+
+  // Store user data in localStorage whenever it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("userData", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("userData");
+    }
+  }, [user]);
 
   return (
     <UserContextVariable.Provider value={{ user, setUser }}>
@@ -42,3 +52,5 @@ export const UserContext: React.FC<{ children: React.ReactNode }> = ({
     </UserContextVariable.Provider>
   );
 };
+
+export default UserContextVariable;

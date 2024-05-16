@@ -10,11 +10,11 @@ import {
   Select,
   Snackbar,
 } from '@mui/material';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import MenuBar from './../Components/MenuBar/MenuBar';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
-import { apiService } from '../../serivces/business/apiService';
+import { useUserContext } from './../Context/UserContext';
+import { apiService } from './../serivces/apiService';
 
 function ProfileEditPage() {
   const { user, setUser } = useUserContext();
@@ -162,7 +162,6 @@ function ProfileEditPage() {
 
   return (
     <div>
-      <MenuBar />
       <Container>
         <Card>
           <CardContent>

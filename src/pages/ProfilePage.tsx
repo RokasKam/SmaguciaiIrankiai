@@ -6,9 +6,9 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import MenuBar from './../Components/MenuBar/MenuBar';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUserContext } from '../../Context/UserContext';
+import { useUserContext } from './../Context/UserContext';
 
 function ProfilePage() {
   const { user, setUser } = useUserContext();
@@ -23,7 +23,6 @@ function ProfilePage() {
   };
   return (
     <div>
-      <MenuBar />
       <Container>
         <Card>
           <CardContent>

@@ -6,10 +6,10 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import MenuBar from './../Components/MenuBar/MenuBar';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
+import { useUserContext } from './../Context/UserContext';
 
 function ProfileDeletePage() {
   const { user, setUser } = useUserContext();
@@ -34,7 +34,6 @@ function ProfileDeletePage() {
 
   return (
     <div>
-      <MenuBar />
       <Container>
         <Card>
           <CardContent>

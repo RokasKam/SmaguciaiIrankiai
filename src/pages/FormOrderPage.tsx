@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Snackbar, TextField } from '@mui/material';
+import {
+  Typography,
+  Container,
+  TextField,
+  Button,
+  Snackbar,
+  Grid,
+  Paper,
+  Box
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../../Context/CartContext';
+import { useCart } from './../Context/CartContext';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
+import { useUserContext } from './../Context/UserContext';
 
 function FormOrderPage() {
   const navigate = useNavigate();
@@ -135,42 +144,50 @@ function FormOrderPage() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Typography variant="h5" gutterBottom>
+    <Container maxWidth="md">
+      <Box my={4}>
+        <Typography variant="h4" gutterBottom>
           Order Summary
         </Typography>
-        <Typography variant="body1" gutterBottom>
-          Total Quantity: {totalQuantity}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Total Price: ${totalPrice.toFixed(2)}
-        </Typography>
+        <Paper variant="outlined" style={{ padding: '20px' }}>
+          <Typography variant="body1" gutterBottom>
+            Total Quantity: {totalQuantity}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Total Price: ${totalPrice.toFixed(2)}
+          </Typography>
+        </Paper>
 
-        <Typography variant="h5" style={{ marginTop: '20px' }} gutterBottom>
-          Shipping Address
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Country:</strong> {shippingAddress.country}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>District:</strong> {shippingAddress.district}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>City:</strong> {shippingAddress.city}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Street:</strong> {shippingAddress.street}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Zip Code:</strong> {shippingAddress.zipCode}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>House Number:</strong> {shippingAddress.houseNumber}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Flat Number:</strong> {shippingAddress.flatNumber}
-        </Typography>
+        <Box mt={4} mb={2}>
+          <Typography variant="h5" gutterBottom>
+            Shipping Address
+          </Typography>
+          <Paper variant="outlined" style={{ padding: '20px' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>Country:</strong> {shippingAddress.country}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>District:</strong> {shippingAddress.district}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>City:</strong> {shippingAddress.city}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>Street:</strong> {shippingAddress.street}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>Zip Code:</strong> {shippingAddress.zipCode}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>House Number:</strong> {shippingAddress.houseNumber}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1"><strong>Flat Number:</strong> {shippingAddress.flatNumber}</Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Box>
 
         <TextField
           label="Discount Code"
@@ -181,23 +198,26 @@ function FormOrderPage() {
           onChange={handleDiscountCodeChange}
         />
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-        >
-          Place Order
-        </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={handlePay}
-        >
-          Pay Order
-        </Button>
-      </form>
+        <Box mt={2}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            style={{ marginRight: 8 }}
+          >
+            Place Order
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handlePay}
+          >
+            Pay Order
+          </Button>
+        </Box>
+      </Box>
 
       <Snackbar
         open={snackbarOpen}
@@ -205,7 +225,7 @@ function FormOrderPage() {
         onClose={handleSnackbarClose}
         message={snackbarMessage}
       />
-    </div>
+    </Container>
   );
 }
 

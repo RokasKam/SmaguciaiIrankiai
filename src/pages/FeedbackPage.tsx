@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
+import { useUserContext } from './../Context/UserContext';
 
 interface Review {
   id: string;

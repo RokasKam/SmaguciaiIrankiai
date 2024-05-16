@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCart } from '../../Context/CartContext';
+import { useCart } from './../Context/CartContext';
 import {
   Typography,
   List,
@@ -13,8 +13,8 @@ import {
   Box,
 } from '@mui/material';
 import { RemoveCircle } from '@mui/icons-material';
-import { Toy } from '../../Interfaces/Toy';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import { Toy } from './../Interfaces/Toy';
+import MenuBar from './../Components/MenuBar/MenuBar';
 import { Link } from 'react-router-dom';
 
 function CartPage() {
@@ -25,7 +25,6 @@ function CartPage() {
 
   return (
     <div>
-      <MenuBar />
       <Typography variant="h4" gutterBottom>
         Your Cart
       </Typography>

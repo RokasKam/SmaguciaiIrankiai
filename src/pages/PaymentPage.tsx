@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button, TextField, Snackbar } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useUserContext } from '../../Context/UserContext';
-import { useCart } from '../../Context/CartContext';
+import { useUserContext } from './../Context/UserContext';
+import { useCart } from './../Context/CartContext';
 
 function PaymentPage() {
   const { clearCart } = useCart();

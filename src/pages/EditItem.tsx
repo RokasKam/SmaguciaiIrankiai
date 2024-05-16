@@ -12,7 +12,7 @@ import {
   Snackbar,
 } from '@mui/material';
 import axios from 'axios';
-import { Category } from '../../Interfaces/Options';
+import { Category } from './../Interfaces/Options';
 
 function EditProductPage() {
   const { id } = useParams<{ id: string }>();

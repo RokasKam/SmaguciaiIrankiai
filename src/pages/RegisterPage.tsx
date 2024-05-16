@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import MenuBar from '../../Components/MenuBar/MenuBar';
+import React, { useState } from "react";
 import {
   Container,
   Typography,
@@ -7,28 +6,32 @@ import {
   Button,
   Paper,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
   Select,
   Snackbar,
-} from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { API_URL } from "../serivces/Configuration";
 
-const genderOptions = ['Man', 'Women', 'Unisex'];
+const genderOptions = ["Man", "Women", "Unisex"];
 
 function RegisterPage() {
-  const [nickname, setNickname] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [gender, setGender] = useState('');
-  const [role] = useState('User');
+  const [nickname, setNickname] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [gender, setGender] = useState("");
+  const [role] = useState("User");
 
   // Shipping Info
-  const [shippingInfo, setShippingInfo] = useState({
+  /*const [shippingInfo, setShippingInfo] = useState({
     country: '',
     district: '',
     city: '',
@@ -36,9 +39,9 @@ function RegisterPage() {
     zipCode: '',
     houseNumber: 0,
     flatNumber: 0,
-  });
+  });*/
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -55,22 +58,22 @@ function RegisterPage() {
       phoneNumber,
       birthDate,
       gender,
-      shippingInfo.country,
+      /*shippingInfo.country,
       shippingInfo.district,
       shippingInfo.city,
       shippingInfo.street,
-      shippingInfo.zipCode,
+      shippingInfo.zipCode,*/
     ];
 
     if (requiredFields.some((field) => !field)) {
-      setSnackbarMessage('Please fill in all required fields.');
+      setSnackbarMessage("Please fill in all required fields.");
       setOpenSnackbar(true);
       return;
     }
 
     // Check if passwords match
     if (password !== repeatPassword) {
-      setSnackbarMessage('Passwords do not match.');
+      setSnackbarMessage("Passwords do not match.");
       setOpenSnackbar(true);
       return;
     }
@@ -91,15 +94,16 @@ function RegisterPage() {
 
       // Make a POST request to register a new user
       const userResponse = await axios.post(
-        'https://localhost:7026/api/User/Register',
-        newUser,
+        API_URL + "/User/Register",
+        newUser
       );
 
       // Handle the response as needed
-      console.log('New user registered:', userResponse.data);
+      console.log("New user registered:", userResponse.data);
+      navigate("/login");
 
       // If user wants to add shipping information
-      if (userResponse.data && shippingInfo.city) {
+      /*if (userResponse.data && shippingInfo.city) {
         // Prepare the request payload for shipping address
         const shippingAddress = {
           ...shippingInfo,
@@ -114,11 +118,11 @@ function RegisterPage() {
 
         console.log('Shipping address added successfully.');
         navigate('/');
-      }
+      }*/
     } catch (error) {
-      setSnackbarMessage('Error registering user. Please try again.');
+      setSnackbarMessage("Error registering user. Please try again.");
       setOpenSnackbar(true);
-      console.error('Error registering user:', error);
+      console.error("Error registering user:", error);
     }
   };
 
@@ -128,24 +132,23 @@ function RegisterPage() {
 
   return (
     <div>
-      <MenuBar />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             margin: 32,
           }}
         >
           <Paper
             elevation={3}
             style={{
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              padding: "16px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <Typography variant="h5">Register</Typography>
@@ -163,31 +166,36 @@ function RegisterPage() {
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
               />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                name="firstName"
-                autoComplete="given-name"
-                autoFocus
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    name="firstName"
+                    autoComplete="given-name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </Grid>
+              </Grid>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -235,7 +243,6 @@ function RegisterPage() {
                 label="Phone Number"
                 name="number"
                 autoComplete="number"
-                autoFocus
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
@@ -248,28 +255,37 @@ function RegisterPage() {
                 label="Birth Date"
                 name="birthDate"
                 type="date"
+                InputLabelProps={{
+                  shrink: true, // This ensures the label is always shrunk away from the input space
+                }}
                 autoComplete="bday"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
               />
-              <Select
+              <FormControl
                 variant="outlined"
                 required
                 fullWidth
-                id="gender"
-                label="Gender"
-                name="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
+                margin="normal"
               >
-                {genderOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
+                <InputLabel id="gender-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-label"
+                  id="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  label="Gender" // This ensures the label floats correctly
+                >
+                  {genderOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-              {/* Shipping Information */}
+              {/* Shipping Information 
               <Typography variant="h6" style={{ marginTop: '16px' }}>
                 Shipping Information
               </Typography>
@@ -356,7 +372,7 @@ function RegisterPage() {
                     flatNumber: parseInt(e.target.value) || 0,
                   })
                 }
-              />
+              />*/}
 
               <Button
                 type="submit"
