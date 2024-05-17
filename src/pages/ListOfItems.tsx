@@ -10,11 +10,19 @@ import {
 import { Link } from "react-router-dom";
 import { Toy } from "./../Interfaces/Toy";
 import axios from "axios";
-import { useUserContext } from '../Context/UserContext';
+import { useUserContext } from "../Context/UserContext";
 
 function ListOfItems() {
   const [toys, setToys] = useState<Toy[]>([]);
   const { user } = useUserContext();
+  const [recomendedItems, setRecomendedItems] = useState<Toy[]>([]);
+  const [showRecomended, setShowRecomended] = useState(false);
+
+  const handleShowRecomended = () => {
+    //api request here to fetch recomended toys
+    setShowRecomended(true);
+  };
+
   useEffect(() => {
     const getAllToysParameters = {
       pageNumber: 1,
@@ -80,6 +88,36 @@ function ListOfItems() {
             </Grid>
           ))}
         </Grid>
+        <Button onClick={handleShowRecomended}>Show Recomended Items</Button>
+        {showRecomended && (
+          <Grid container spacing={2}>
+            {Object.values(recomendedItems).map((toy) => (
+              <Grid item xs={12} sm={6} md={4} key={toy.id}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6">{toy.name}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {toy.description}
+                    </Typography>
+                    <Typography variant="h6" color="primary">
+                      {toy.price}
+                    </Typography>
+                    <Button
+                      component={Link}
+                      to={`/Toys/${toy.id}`}
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      style={{ marginTop: 8 }}
+                    >
+                      View Details
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
     </div>
   );

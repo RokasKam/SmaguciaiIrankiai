@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, TextField, Paper } from "@mui/material";
+import { Box, Typography, Button, TextField, Grid, Paper } from "@mui/material";
+import { Auction } from "./../Interfaces/Auction";
+import { Profile } from "./../Interfaces/Profile";
 
-interface Auction {
-  id: string;
-  name: string;
-  price: number;
-  startDate: string;
-  endDate: string;
-  status: string;
-  description: string;
-}
 
 // Dummy data for the example
 const DUMMY_AUCTIONS: Auction[] = [
@@ -30,12 +23,19 @@ const AuctionPage = () => {
   const navigate = useNavigate();
   const [auction, setAuction] = useState<Auction | undefined>(undefined);
   const [bidAmount, setBidAmount] = useState<number>(0);
+  const [winner, setWinner] = useState<Profile | undefined>(undefined);
 
   useEffect(() => {
     const foundAuction = DUMMY_AUCTIONS.find(
       (auction) => auction.id === auctionId
     );
     setAuction(foundAuction);
+
+    // Simulate fetching winner data
+    if (foundAuction && foundAuction.status === "Completed") {
+        //Api call for fetching winner
+        //setWinner();
+      }
   }, [auctionId]);
 
   const handleBid = () => {
@@ -46,12 +46,12 @@ const AuctionPage = () => {
   if (!auction) return <Typography variant="h6">Auction not found</Typography>;
 
   return (
-    <Box padding={3}>
+    <Box padding={3} maxWidth="md" mx="auto">
       <Typography variant="h4" gutterBottom>
         {auction.name}
       </Typography>
-      <Paper elevation={2} style={{ padding: "20px", marginBottom: "20px" }}>
-        <Typography variant="h5" color="primary">
+      <Paper elevation={2} sx={{ padding: 3, marginBottom: 3 }}>
+        <Typography variant="h5" color="primary" gutterBottom>
           Details:
         </Typography>
         <Typography variant="body1">
@@ -66,30 +66,50 @@ const AuctionPage = () => {
         <Typography variant="body1">Status: {auction.status}</Typography>
         <Typography variant="body1">{auction.description}</Typography>
       </Paper>
-      <TextField
-        label="Your Bid ($)"
-        type="number"
-        fullWidth
-        variant="outlined"
-        onChange={(e) => setBidAmount(parseFloat(e.target.value))}
-        InputProps={{ inputProps: { min: auction.price } }}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleBid}
-        style={{ marginTop: "20px" }}
+      {winner && (
+        <Paper elevation={2} sx={{ padding: 3, marginBottom: 3 }}>
+          <Typography variant="h5" color="primary" gutterBottom>
+            Winner:
+          </Typography>
+          <Typography variant="body1">Name: {winner.name}</Typography>
+          <Typography variant="body1">Email: {winner.email}</Typography>
+        </Paper>
+      )}
+      <Box
+        component="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleBid();
+        }}
       >
-        Place Bid
-      </Button>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={() => navigate(-1)}
-        style={{ marginTop: "20px", marginLeft: "10px" }}
-      >
-        Go Back
-      </Button>
+        <TextField
+          label="Your Bid ($)"
+          type="number"
+          fullWidth
+          variant="outlined"
+          value={bidAmount}
+          onChange={(e) => setBidAmount(parseFloat(e.target.value))}
+          InputProps={{ inputProps: { min: auction.price } }}
+          sx={{ marginBottom: 3 }}
+        />
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Place Bid
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              onClick={() => navigate(-1)}
+            >
+              Go Back
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };

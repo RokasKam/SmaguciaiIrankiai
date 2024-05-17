@@ -1,14 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
   Container,
   Card,
   CardContent,
   Typography,
   Button,
-} from '@mui/material';
-import MenuBar from './../Components/MenuBar/MenuBar';
-import { Link, useNavigate } from 'react-router-dom';
-import { useUserContext } from './../Context/UserContext';
+  Box,
+  Grid,
+} from "@mui/material";
+import MenuBar from "./../Components/MenuBar/MenuBar";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "./../Context/UserContext";
 
 function ProfilePage() {
   const { user, setUser } = useUserContext();
@@ -19,55 +21,70 @@ function ProfilePage() {
     setUser(undefined);
 
     // Redirect to the home page
-    navigate('/');
+    navigate("/");
   };
   return (
-    <div>
-      <Container>
+    <Container maxWidth="sm">
+      <Box mt={4}>
         <Card>
           <CardContent>
-            <Typography variant="h4">{user?.Name}</Typography>
-            <Typography variant="h6">{user?.Email}</Typography>
-
-            <Button
-              onClick={handleLogout}
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Atsijungti
-            </Button>
-            <Button
-              component={Link}
-              to={`/Profile/Edit`}
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Redaguoti paskyrą
-            </Button>
-            <Button
-              component={Link}
-              to={`/Profile/PasswordChange`}
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Keisti slaptažodį
-            </Button>
-            <Button
-              component={Link}
-              to={`/Profile/Delete`}
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              Šalinti paskyrą
-            </Button>
+            <Typography variant="h4" gutterBottom>
+              {user?.Name}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {user?.Email}
+            </Typography>
+            <Box mt={3}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Button
+                    component={Link}
+                    to="/Profile/Edit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Edit Profile
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    component={Link}
+                    to="/Profile/PasswordChange"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Change Password
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    onClick={handleLogout}
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Logout
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    component={Link}
+                    to="/Profile/Delete"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Delete Account
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
           </CardContent>
         </Card>
-      </Container>
-    </div>
+      </Box>
+    </Container>
   );
 }
 

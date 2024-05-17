@@ -42,6 +42,12 @@ const MenuBar: React.FC<MenuBarProps> = ({
                   to="/auctions"
                   style={{ color: "inherit" }}
                 />
+                <Tab
+                  label="Order"
+                  component={Link}
+                  to="/Cart/Order"
+                  style={{ color: "inherit" }}
+                />
                 {user && user.Role === "Courier" && (
                   <Tab
                     label="Route"
